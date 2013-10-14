@@ -84,7 +84,6 @@ CyberMath (7) is a shared virtual environment in which users can control persona
 \end{itemize}
 CyberMath, being a purely virtual environment,  lacks the immersiveness and tangibility of an AR application.
 
-
 \subsection{PhysicsPlayground}
 PhysicsPlayground (6) is an AR application in which students and teachers can create physical experiments that can be simulated in real time in a virtual environment. PhysicsPlayground is built on top of the Studierstube AR framework and uses the PhysX API as its physics engine. Students are able to walk around objects and view experiments from different perspectives, providing a highly immersive experience. Being able to simulate experiments in real time encourages students and teachers reconfigure and variate experiment parameters. Because PhysicsPlayground is based on Studierstube, it also requires the use of HMDs and a PIP to interact with the virtual environment. Both PhysicsPlayground and Construct3D were developed in the same lab.
 
@@ -115,30 +114,22 @@ A particular use case in mathematics could be a student struggling with 3D graph
 \subsection{Anticipated Approach}
 \label{subsec:approach}
 
-%I think the bullets could use more - where do we get the content? Where do we actually figure out the AR stuff? 
-\begin{itemize}
-\item Build OCR (optical character recognition) engine, or become familiar with a library
-\item Build basic backend for processing equations and keywords found in text (possibly including an NLP library)
-\item Create a system that determines what kind of graphic to show based on input
-\item Build a protocol that will allow us to render these graphics on the client
-\end{itemize}
-
 We will develop an iOS application to serve as a light client and input device. Users will launch the app and point the device’s camera at the text s/he would like to visualize. The device’s camera will then analyze the images at a fixed rate, attempting to perform OCR on the text. Once the OCR algorithm is successful, the data will be sent to the cloud for further processing. This will be done by attaching the information as a JSON object to the body of a POST request.
 
 In the cloud, the text input will be analyzed to determine possible graphics for display. This will be done by reducing the text into possible points of interest (a math formula, important keywords) and comparing them against a repository of stored results for queries. If there is a match, then we will send the image’s url (stored on our servers) to the device. Otherwise, if the type of the text is a math formula, then we will feed it through a formula visualizer and generate an image which we will associate with the formula and stored on our servers. The url for the new image will then be sent to the device.
 
 Back on the device, the image will be downloaded and cached while the iOS application determines the best location at which to overlay the image over the user’s paper. This will be done through image processing to find an area with a maximum of negative space. Once the optimal location is found, the image will be overlaid at the location. If the image would overlap text then the opacity of the image will be reduced so as to leave the text legible.
 
+\begin{figure}[htb!]
+	\begin{center}
+		\includegraphics[width=0.9\linewidth]{block_diagram}
+	\end{center}
+	\vspace{-12pt}
+	\caption{Example Figure/Graph}
+	\label{fig:some_graph}
+\end{figure}
 \subsection{Technical Challenges}
 \label{subsec:tech_challenges}
-\begin{itemize}
-\item How to read the input (via OCR) without additional markings on the paper
-\item How to break down the input and determine what we could possibly show as visuals
-\item How to determine which visual would be best to display
-\item How to actually display the visual on the end client
-\item How to save on battery life on the end client
-\item How to reduce latency of the overall system 
-\end{itemize}
 
 Implementing a reliable system of this scope will present several interesting challenges. We will need to perform OCR on an image the user chooses without any user input. This will need to be done both quickly and reliably, and on the device to prevent the network latency inherent in sending a cluster of images over the network. 
 
