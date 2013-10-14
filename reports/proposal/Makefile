@@ -29,3 +29,6 @@ example: $(EXAMPLETEX) $(EXAMPLE).bib
 	$(CC) $(EXAMPLETEX)
 	$(CC) $(EXAMPLETEX)
 	
+clean: 
+	rm -rf *.log *.aux *.bbl *.blg
+	rm -rf *eps-converted-to.pdf
