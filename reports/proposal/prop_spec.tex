@@ -24,15 +24,15 @@
 % We setup the parameters to our title header before 'making' it. Note
 % that your proposals should have actual titles, not the generic one
 % we have here.
-\title{CIS400/401 ARMS: Augmented Reality for Math and Science}
-\subtitle{Dept. of CIS - Senior Design 2013-2014\thanks{Advisor: Boon Loo (boonloo@cis.upenn.edu).}}
+\title{CIS400/401 CodeScore}
+\subtitle{Dept. of CIS - Senior Design 2013-2014\thanks{Advisor: Chris Murphy (cdmurphy@cis.upenn.edu).}}
 \numberofauthors{4}
 
 \author{
-Allison Pearce \\ \email{alpearce@seas.upenn.edu} \\ Univ. of Pennsylvania \\ Philadelphia, PA
-\and Spencer Lee \\ \email{lesp@seas.upenn.edu} \\ Univ. of Pennsylvania \\ Philadelphia, PA
-\and Tanvir Ahmed \\ \email{tanvir@seas.upenn.edu} \\ Univ. of Pennsylvania \\ Philadelphia, PA
-\and Will McDermid \\ \email{wmcd@seas.upenn.edu} \\ Univ. of Pennsylvania \\ Philadelphia, PA}
+Allison Pearce \\ \email{alpearce@upenn.edu} \\ Univ. of Penn \\ Philadelphia, PA
+\and Spencer Lee \\ \email{lesp@upenn.edu} \\ Univ. of Penn \\ Philadelphia, PA
+\and Tanvir Ahmed \\ \email{tanvir@upenn.edu} \\ Univ. of Penn \\ Philadelphia, PA
+\and Will McDermid \\ \email{wmcd@upenn.edu} \\ Univ. of Penn \\ Philadelphia, PA}
 
 \date{}
 \maketitle
@@ -40,8 +40,7 @@ Allison Pearce \\ \email{alpearce@seas.upenn.edu} \\ Univ. of Pennsylvania \\ Ph
 % Next we write out our abstract -- generally a two paragraph maximum,
 % executive summary of the motivation and contributions of the work.
 \begin{abstract}
-  \textit{We propose a mobile augmented reality application to help demonstrate math and physics concepts to middle and high school students.  Our primary motivation for this project is to make math and physics principles more tangible and more interesting to students using technology that many of them already own. Similar applications have been demonstrated to be effective for learning, but most previous work has relied on custom hardware. We aim to bring this technology to a mobile platform, making it more accessible to students and advancing the state of the art in mobile augmented reality applications for education.}
-
+  \textit{We propose an application to quantitatively analyze code based on the presence of code smells and algorithmic complexity. Our application will then compute a CodeScore, which is a single metric whose value will immediately let someone determine that piece of code's quality. Our primary motivation for this project is to enable people to not only improve their own coding ability by getting feedback on their code but to allow them to objectively determine whether a piece of software is good. Similar applications have been built in the past, but they largely consist of techniques which determine whether code smells are present in code. Our application aims to not only do this, but also learn which code smells are more harmful than others and come up with a single metric that determines the overall quality of a piece of software.}
 \end{abstract}
 
 % Then we proceed into the body of the report itself. The effect of
@@ -51,148 +50,178 @@ Allison Pearce \\ \email{alpearce@seas.upenn.edu} \\ Univ. of Pennsylvania \\ Ph
 % 'ref' command.
 \section{Introduction}
 \label{sec:intro}
-Augmented reality (AR) is a technology that allows users to perceive and interact with completely computational objects in the real world. Previous literature defines three specific characteristics of an augmented reality system \cite{azuma2001recent}: 
-\begin{enumerate}
-\item It combines real and virtual objects in a real environment
-\item It aligns real and virtual objects with each other
-\item It is interactive, and runs in real time and three dimensions
-\end{enumerate}
-The definition of AR includes systems that interact with all five human senses, but the most common implementation uses a visual display, and these are the systems we will focus on. The simplest way to create visual AR is through a digital device with a camera that serves as a lens to the real world. While the user looks through the lens, an application overlays virtual objects on the video feed of the real environment. This is known as video see-through \cite{van2010survey}.  Other options are creating an AR overlay using mirrors and lenses, or projecting AR overlays onto real objects. Video see-through offers a number of advantages, including lowest cost and easiest implementation.  
+The application that we are proposing will quantitatively analyze software to determine its code quality. To this end, our application will test for the presence of code smells, analyze code complexity, and compute a final score that will help determine how good the software is.
+ 
+Code smells are defined as symptoms in code that indicate deeper problems in the software. Some common code smells include:
+\begin{itemize}
+\item Classes that have too many lines of code
+\item Methods that have too many lines of code
+\item Duplicated code across the same piece of software
+\item General lack of comments when they are needed
+\item Long list of parameters for functions
+\item Conditional statements in the code are too complex
+\item Unhelpful naming conventions
+\end{itemize}
 
-Video see-through AR has recently become feasible on a widespread consumer scale, thanks to the popularity and rapid development of mobile platforms such as iOS and Android. This has opened up a profusion  of possible consumer applications of AR, including education.  Studies have demonstrated the benefits of AR in the classroom,  including engaging and motivating students, enabling hands-on learning where it would otherwise be impossible (i.e. astronomy), and providing a system students can use for independent learning at their own pace \cite{whatevs}. With math and physics in particular, augmented reality offers the advantage of allowing students to repeat experiments quickly and easily without the need for additional equipment. Furthermore, the three-dimensional aspect of AR allows for a more realistic representation of math and physics concepts -- such as volume, surface integrals, and three-dimensional motion -- than two-dimensional textbooks, graphing calculators, or online tutorials can offer.  Few such applications exist, and even fewer are available on mobile platforms. Many existing math and physics applications require special hardware such as a headpiece or stylus, and accessing the equipment often requires a visit to a lab \cite{kaufmann2003mathematics, kaufmann2008simulating}.  
+The presence of code smells is typically correlated with low code quality since they directly affect the software's maintainability and readability. Although some work has been done in this area to detect the presence of code smells in software, what we are proposing with regards to code smells is unique. We are proposing a mechanism and algorithm that will learn which code smells are considered to be more detrimental than others and devise a way to assign weights to each kind of code smell. 
 
-We propose an application that will bring the benefits of AR for math, physics, and related subjects to cell phones and tablets, which many students, parents, and teachers already own. The app will serve as a supplement to classroom learning and will allow the student to interact with his or her notes, adding 3D animations, models, and diagrams to enhance their understanding of the material. We expect to make math and science concepts more understandable and more fun to learn by using a novel technology that requires no special hardware. This could have far-reaching impacts for secondary education. We also intend to overcome some of the existing challenges in developing augmented reality applications for mobile platforms, which will further the state of the art of mobile-based AR. 
+For code complexity analysis, we will devise a way to see how arbitrary pieces of code perform when provided large inputs. This will allow us to test two key metrics: scalability and complexity. If the code can handle large inputs with relatively logarithmic time complexity, this will ensure that the code is likely the most optimal that it can be as well as scalable. Both of these characteristics are considered to be valuable when evaluating code.
 
+We think that such an application will be useful in a number of fields. It can help developers improve their own code once they know which facets to improve on. Given that our application can determine what makes a piece of software bad, it can also give tips and hints as to what can be done to improve. Another use case would be for recruiting technical talent. Often, technical recruiters glance at resumes and determine whether or not to proceed with a candidate. Our application will allow recruiters to effectively determine which candidates have the strongest coding ability. This will help them save time and money by not interviewing the wrong candidates. For Computer Science teachers, the application provides an additional metric that could be used to grade assignments. Not only can teachers now check code for accuracy in functionality, they can also evaluate their students on the quality of their code. This will help students become better developers.
 
 % The header of this document might have been a little intimidatating
 % to beginners. Notice once you are in the body of the document,
 % however, LaTeX commands are minimal and 'normal text' is frequent.
 \section{Related Work}
 \label{sec:related_work}
-Several projects already exist with the goal of utilizing augmented reality or virtual reality technology for educational purposes, however, these projects are either fully virtualized or require the use of expensive, custom-designed tracking and haptic hardware. Many of these projects were proposed and implemented in order to explore the potential of virtual reality or mixed reality for augmenting the learning process, as discussed by Mantovani in \cite{mantovani200112}. As evidenced by the evaluations of these projects, virtual or mixed reality demonstrations of concepts do seemingly enhance the learning experience, especially when these demonstrations are dynamic and interactive, and when the environment is immersive. Unfortunately, in order to achieve optimal immersiveness and interactivity, expensive hardware is required, which limits the accessibility of such technology. We will discuss in further detail some major related works which apply virtual or mixed reality approaches to math and science education, pointing out how these projects demonstrated the effectiveness of augmented learning, and also how these projects are not easily disseminated to a wide user base.
+In this section, we will provide background information on the different methods of analyzing code, the standards for measuring code quality, and various services and applications that already strive to provided quantitative analyses of code quality.
 
-\subsection{Studierstube}
-Studierstube \cite{schmalstieg2002studierstube} is an augmented reality framework upon which several other AR projects (such as PhysicsPlayground and Construct3D) are built. Studierstube focuses on collaborative AR, where separate users can interact with shared virtual entities that are embedded into a real-world environment. The developers of Studierstube believe that AR applications are more feasible for manipulating three-dimensional information in an educational environment than purely virtual applications. Studierstube is designed for use with head-mounted displays or projection screens, and the environment is controlled using a Personal Interaction Panel (PIP).
+\subsection{Code Analysis Methodologies}
+The majority of existing applications for measuring code quality rely on well-established code analysis techniques. These techniques involve breaking code down into specific units and measuring the counts of these units. Such techniques include parsing the source code into control structures \cite{mccabe1976complexity}, tokens \cite{halstead1977elements}, assembly instructions \cite{park1992software}, or objects \cite{chidamber1994metrics}. Once the source code has been parsed into some unit (this process is called static analysis), the attributes of the code, such as reliability, security, efficiency, size, and maintainability can be measured from the parsed results. The actual approach to measuring these attributes originated in \cite{boehm1976quantitative} and later became part of the ISO/IEC 25000 series of standards relating to the quality and evaluation of software \cite{iso2011iec}. These techniques and standards comprise the foundation for today's code quality measurement applications, and they will be the basis for our approach as well.
 
-\subsection{CyberMath}
-CyberMath \cite{taxen2001cybermath} is a shared virtual environment in which users can control personal avatars and explore an area similar to museum in which mathematical concepts are visually demonstrated. Cybermath is built on the DIVE framework \cite{carlsson1993dive}. Users can interact with the different exhibits in order to explore and attain a greater understanding of the demonstrated concepts. Additionally, there is a central hub which can be used for more traditional teaching methods, such as lecturing and presenting slideshows. CyberMath contained four completed exhibitions in 2001:
+\subsection{Ohloh}
+Launched in January of 2006, Ohloh \cite{allen2009ohloh} is web service and online community owned by Black Duck Software which provides basic metrics for over 650,000 open source projects containing over 24,000,000,000 lines of code located in over 620,000 source code repositories and managed by over 3,000,000 contributors. These projects are retrieved from source control repositories and analyzed. Metrics such as lines of code, amount of source code comments, and estimated software cost (based on the COCOMO model \cite{boehm2000software}) are provided, along with commit statistics, project activity, and programming language detection. This data is graphically displayed when one views a projects information on the site. Ohloh also provides global statistics across all projects for different programming languages and contributor statistics for different authors of open source code. 
+
+Ohloh's primarily focuses on tracking project/contributor activity for large open-source projects, with less attention being paid to actually providing quantitative measurements of code quality.
+
+\subsection{Common Weakness Enumeration}
+The Common Weakness Enumeration (CWE) \cite{mitre2006cwe} is a community-developed list of software weaknesses hosted by the MITRE Corporation. The CWE was developed with the intention of providing:
+
 \begin{itemize}
-\item Interactive transformations, where users can map a three-dimensional domain point to a range point and investigate the effects of these mappings on different entities such as points, lines, planes, spheres, and rectangular prisms.
-\item Generalized cylinders, where users can construct three-dimensional surfaces using differential geometry. Differential geometry is usually an advanced topic, but aspects can be demonstrated with relative ease.
-\item Cylindrical optics, where cylindrical mirrors can be positioned and bent in order to demonstrate the reflection and focusing of waveforms.
-\item Focal surfaces, in which focal sheets (another differential geometry concept) are shown for a given surface.
+\item a common standard of identifying, mitigating, and preventing software weaknesses.
+\item a common source of source of measuring weaknesses for software security tools.
+\item a common language for describing the various types of software weaknesses that exist in computer architecture, software design, and source code.
 \end{itemize}
-CyberMath, being a purely virtual environment,  lacks the immersiveness and tangibility of an AR application.
 
-\subsection{PhysicsPlayground}
-PhysicsPlayground \cite{kaufmann2008simulating} is an AR application in which students and teachers can create physical experiments that can be simulated in real time in a virtual environment. PhysicsPlayground is built on top of the Studierstube AR framework and uses the PhysX API as its physics engine. Students are able to walk around objects and view experiments from different perspectives, providing a highly immersive experience. Being able to simulate experiments in real time encourages students and teachers reconfigure and variate experiment parameters. Because PhysicsPlayground is based on Studierstube, it also requires the use of HMDs and a PIP to interact with the virtual environment. Both PhysicsPlayground and Construct3D were developed in the same lab.
+CWE supports the discovery of common types of software security flaws such as buffer overflows, handler errors, pathname traversals, and resource management errors (amongst others) within code.
 
-\subsection{Construct3D}
-Construct3D \cite{kaufmann2003mathematics} is an AR application built on the Studierstube framework, which focuses on extending the realm of differential geometry in order to improve spatial skills of students in high school or other higher education. Construct3D was evaluated over 500 users, which included students, teachers, and experts, over the course of five years \cite{tuw176085}. Construct3D allows users to dynamically construct and interact with three-dimensional entities in three-dimensional space. Users are able to construct primitives such as points, lines, planes, cubes, spheres, cylinders, cones, b-splines, b-spline surfaces, conic sections, and quadratics, among others. Operations on these primitives include but are not limited to boolean operations (intersection, difference, union, etc.), normal lines/planes, symmetry operations, and measurements. Objects are constructed in 3D layers, where overlapping subspaces can be controlled and viewed separately by each user. 
+CWE began with the Common Vulnerabilities and Exposures (CVE) list in 1999 \cite{mitre2005cve}. As part of the National Institute of Technology's (NIST) Software Assurance Metrics and Tool Evaluation (SAMATE) project \cite{nist2005samate}, MITRE expanded upon the CVE list with the Preliminary List of Vulnerability Examples for Researchers (PLOVER) \cite{christey2005plover}. PLOVER was the first attempt to take real-world examples of software vulnerabilities and abstract them into common classes of more general vulnerabilities that can arise during the software development process. The goal of PLOVER was to make this information available to a wide variety of people so that they may use it for a variety of purposes. CWE encompasses much of the CVE list and expands upon PLOVER by establishing community-developed definitions and descriptions of these common weaknesses.
 
-Different hardware environments were evaluated for use with Construct3D, in addition to the wearable setup with HMD and PIP, projection screens setups and personal workstations were also used. These alternative setups lack the same level of immersion that HMDs provide. The HMDs used with Construct3D are described in more detail in \cite{kaufmann2007multiple}, and their drawbacks are discussed in the evaluation of Construct3D \cite{kaufmann2007summary}. Primarily, head-mounted displays have a propensity for causing ``simulator sickness" when used for extended durations. Some students reported experiencing eye strain and headache after 20 minutes. 
+CWE, though possibly a valuable resource for our endeavors, primarily strives to provide standards relating to the weaknesses of code in terms of security.
 
-Other major obstacles preventing technology such as Construct3D from becoming widely used in education environments are brought to attention by H. Kaufmann in \cite{tuw176085}:
+\subsection{Other Static Code Analysis Tool}
+A wide variety of other static code analysis tools also exist. The Web Application Security Consortium provides community-sourced list of some recent tools for code analysis \cite{webappsec2012}. Some of these tools include:
+
 \begin{itemize}
-\item The costs of the hardware and software environment are too high
-\item There is need for specialized maintenance of all equipment, which further increases costs
-\item The most efficient and preferred setup supports only 2-3 users simultaneously
+\item CodeSonar - A full-featured code analysis tool with binary analysis, results visualization, and a wide variety of metrics. CodeSonar can detect numerous code faults and security risk within projects containing up to millions of lines of Java, C, or C++ code.
+\item Klocwork Insight - Provides a wide range of metrics with detailed reports and offers integration with a variety of IDEs.
+\item FindBugs - Open-source code analysis tool which is capable of detecting many different types of bugs in Java code.
+\item Yasca - An open-source code analysis tool which combines the functionality of many other open-source code analysis tools in order to provide quality and security metrics for code written in a wide range of languages.
 \end{itemize}
-We hope to address these three obstacles directly with our project.
+
+The majority of existing code analysis tools are either commercial applications catering to companies, or open-source tools with limited functionality.
 
 \section{Project Proposal}
 \label{sec:project_proposal}
-Our project aims to help students understand concepts in mathematics and science better through the aid of an augmented reality application running on easily accessible hardware. To this end, our application will provide visuals in terms of graphs, 3D images, definitions, and demonstrations alongside text such as a student's notes that will improve comprehension of the material at hand. What is unique about our project is that we will target our application to run on iOS devices because they are now ubiquitous and will not require most of our user-base to acquire additional sophisticated hardware.
+We propose to design a process that will be used to quantitatively assess code quality. A user will upload examples of his or her code to a server, where our program will evaluate its internal quality by detecting code smells and its external quality through complexity analysis. We plan to focus on static, internal quality because we believe this approach allows for the quantification of source code's quality without becoming biased by different system architectures or environments. We plan to use code smells as an indicator of these metrics because they are specific and detectable, and because there is existing work which we can use as a starting point \cite{moha2009duchien}, \cite{palomba}. Quality metrics to consider include readability, understandability, complexity, maintainability, and testability. Given the time constraints of this project, we intend to limit our scope to just two important metrics, understandability and maintainability, and include additional metrics if we meet our goals. 
 
-Although educational support with AR has been attempted by others in the field, their efforts had little impact because they required the purchase of additional hardware or extra materials. For example, most AR applications in the education field today use special cards or markings that tell the AR application that this is an area of interest, or even relied on a unique headpiece. Our application will use equations or keywords in text to signal when to begin processing information, and to determine what to display. This is will allow us to create a general-purpose application that is not confined to a few use cases. It also means that there is no additional overhead into making a block of text “AR compatible”.  We hope that this will help students better understand the material that they are working on by providing in-line aid without extra effort from the publisher or student. 
+{\it Understandability}, a measure of how easy a code sample is to understand, can be estimated in part by the length of message chains, length of parameter lists, by keeping track of what fraction of variable names are dictionary words vs jumbles of letters and numbers, by analyzing the class structure of a program. 
 
-A particular use case in mathematics could be a student struggling with 3D graphs. Using our application, he could launch our application on his iPhone and point the camera at an equation in his notes. Our applicatoin would overlay a graph of the surface described by the equation on his notepaper. Similarly, imagine a demonstration of projectile motion on the table next to a student's physics notes. Or even in computer science, imagine a student is reading about merge sort for the first time. For some, this may be a difficult algorithm to visualize. Our app will pull up and overlay an animation depicting merge sort onto the user’s paper. These aids will make it easier and more fun for middle and high school students to learn math and science.   
+{\it Maintainability}, a measure of how easy a code sample will be to update and change, can be estimated in part by detecting and recognizing coupling between classes, duplicated code, and classes that are too large. Other indicative code smells include shotgun surgery, which describes the situation in which making one change requires lots of small changes to several classes, and divergent change, in which one class might need different changes for different reasons and indicates that two classes might be better than one.
 
-%A particular use case in the field of Computer Science would be when a student is reading about merge sort for the first time. For some, this may be a difficult algorithm to visualize. With our application, a user would launch the iOS application and point the device’s camera at text describing merge sort. Our app will then pull up and overlay a graphic or animation depicting merge sort onto the user’s paper. This would require no additional work from the user’s end in terms of marking the text, etc.
+These two components of quality are often underemphasized in classes, in which students work quickly and often haphazardly to meet project deadlines and never revisit their code after turning it in. However, understandability and maintainability are critical outside of the classroom, where many people need to understand code they did not write themselves, and be able to maintain it for years as the product evolves. Our tool would help students assess and improve these necessary software engineering skills, and help recruiters identify potential employees who will write maintainable, understandable code.
 
+We plan to use crowdsourcing and machine learning to determine how much weight each code smell will contribute to the quality score based on the way a human would evaluate similar code samples. This will be done through a crowd-sourced rating mechanism, in which users are given incentives to read through and rate training code samples. These ratings will then be compared with Our program will detect code smells and other issues, and machine learning will help us tune the parameters in our model to produce the overall grade. 
+
+Our tool will also provide a detailed score report. This report could then be shared with recruiters as a quick and objective evaluation of a candidate's programming ability. It could also be used as a tool for self-improvement, or by teachers as a grading tool. This report will also be summarized with a computed CodeScore, a score that reflects the overall quality of the code after analyzing both internal and external characteristics.
 
 \subsection{Anticipated Approach}
 \label{subsec:approach}
+Because of our familiarity with the language and conventions, we will focus our attentions on Java for the purpose of this project. We are comfortable with this choice because it is commonly used by companies for interviews, and it is taught at many institutions as a "beginner" language. We will also program the system in Java for several reasons: It will be easier to analyze Java code with the native language, Java can be run on almost any architecture, and the language lends itself to an elegant and easy to understand design.
 
-We will develop an iOS application to serve as a light client and input device. Users will launch the app and point the device’s camera at the text s/he would like to visualize. The device’s camera will then analyze the images at a fixed rate, attempting to perform OCR on the text. Once the OCR algorithm is successful, the data will be sent to the cloud for further processing. This will be done by attaching the information as a JSON object to the body of a POST request.
+Our overall system architecture is shown below. We will be leveraging Amazon Web Services (AWS) heavily for this project. One of the first things that we will set up is a code repository in the cloud on an EC2 machine. EC2 is a service that provides resizable computing capacity in the cloud. A user can upload their code to this endpoint, where it will trigger our application. To start, our application will analyze internal quality of a piece of code and generate reports for maintainability and understandability. Before our analysis engine runs, we will do a simple compilation of the code in the cloud to make sure that our input is well-formed.
 
-In the cloud, the text input will be analyzed to determine possible graphics for display. This will be done by reducing the text into possible points of interest (a math formula, important keywords) and comparing them against a repository of stored results for queries. If there is a match, then we will send the image’s url (stored on our servers) to the device. Otherwise, if the type of the text is a math formula, then we will feed it through a formula visualizer and generate an image which we will associate with the formula and stored on our servers. The url for the new image will then be sent to the device.
+To analyze the internal quality of a piece of code, we will have a worker class that will essentially act as a tokenizer of the source code and analyze it line by line. For example, after the source code is analyzed, the worker class could count the number of newline tokens to compute the "lines of code" metric. We will also check to see if variable names are apt for the situation. To this end, we will check to see if variable names are similar to English words. We can have a lexicon of the English dictionary that we can use to do this check. For each non-whitespace, non-keyword token that exists in the source code, we can do a check to see if that word is similar enough to a word in our lexicon. We will do this because variable names that have words in them are easier to understand than those variables without words in their names. We will also introduce a type of blacklist so that words that are not suited for variable names like "something" or "anywhere" will affect our metrics aversely. We will iterate over our tokens and count instances of if-statements, for loops, and while loops as well. We can also do simple analysis like how many parameters are in function signatures fairly easily. We will also look for daisy chaining of methods. To do this, we can go line by line in the source code and check to see how many method calls are being made at each line. 
 
-Back on the device, the image will be downloaded and cached while the iOS application determines the best location at which to overlay the image over the user’s paper. This will be done through image processing to find an area with a maximum of negative space. Once the optimal location is found, the image will be overlaid at the location. If the image would overlap text then the opacity of the image will be reduced so as to leave the text legible.
+To watch over this, we will have a controller class that will coordinate a pool of worker threads. When a piece of software is uploaded to our endpoint, the controller class will spin off $n$ workers, where $n$ is the number of files in the piece of software that was just uploaded. Then each of the workers will compute their tasks as mentioned above. After all the work is done, the controller will then reduce all of the data computed by the workers and summarize the findings. This is our initial design. One drawback to this method is that it is largely centralized. If the server containing our controller code goes down at any point in time, we will lose all progress in our analysis. In the future, we can make this decentralized so that if the server goes down, not much work will be lost. Ideally, this process would be map reduce.
+
+To analyze the external quality of the code, we will mainly do complexity analysis. This will be done by simply measuring the time it takes for certain snippets of code to execute. By tweaking the input parameters, our application will be able to roughly identify the theoretical algorithmic complexity of the code in question. An example of this is shown below in our evaluation section.
+
+To then calculate basic maintainability and understandability scores, we will weight our metrics using weighted equations taking into account factors which contribute to both metrics. We will then combine them based on weightings specified by a user or on some default weighting.
+
+Each feature examined to determine our metrics will be weighted by a parameter. These parameters will be tuned using machine learning techniques based on ratings for training code rated by volunteers in a crowdsourcing platform. We hope to do this via Amazon's Mechanical Turk. We will generate a large number of code snippets that each exhibit a small subset of code smells. We will then upload them to MTurk. There, each user will be prompted to look for these code smells and then give the snippet of code an overall score. We can check two things with this crowdsourcing:
+
+\begin{itemize}
+\item Which code smells are most often overlooked
+\item Which snippets of code have higher quality ratings (implying their code smells are not as bad)
+\end{itemize}
+
+We will then take these features from our user surveys and feed it through a machine learning algorithm via our learning module. Some learning techniques we are considering are linear regression, k-nearest neighbors, and kernel regression. We will then look at each code smell and see its relative information gain. From here, we can determine which code smells are more detrimental to software than others. This will also allow us to weight each of our calculated metrics in a more coherent way. Once we are able to weight our metrics, we will be able to compute the CodeScore.
 
 \begin{figure}[htb!]
 	\begin{center}
 		\includegraphics[width=0.9\linewidth]{block_diagram}
 	\end{center}
 	\vspace{-12pt}
-	\caption{Example Figure/Graph}
+	\caption{Block diagram of our system}
 	\label{fig:some_graph}
 \end{figure}
+
 \subsection{Technical Challenges}
 \label{subsec:tech_challenges}
 
-Implementing a reliable system of this scope will present several interesting challenges. We will need to perform OCR on an image the user chooses without any user input. This will need to be done both quickly and reliably, and on the device to prevent the network latency inherent in sending a cluster of images over the network. 
+The most significant technical challenge we will face is defining the rules for detecting each type of code smell. This is more a research problem than an implementation problem, and we will have to perform a series of experiments to fine-tune our detection algorithms. This will be especially difficult because in some cases, we will not have an existing detector to compare results with, but we can overcome this by comparing with human detection. We must then determine the best combination of feasible analyses that will yield an accurate and comprehensive reflection of internal code quality. This problem has been attempted many times, but the results leave much to be desired and are often limited to a single specific factor instead of providing a general assessment of talent. We hope to combine human and machine intelligence using crowdsourcing and machine learning to address this problem, but this strategy will present another challenge in terms of filtering through the results and incorporating them into our model efficiently and correctly.
 
-Once on our servers, the text will need to be parsed for points of interest. Apart from actually determining the points of interest, we will need to implement some similarity metrics if we are going to use them (the points of interest) to index into an image mapping. To continue with our merge sort use case, ``merge sort" and ``mergesort" should index to the same image.
+Another technical challenge will be to determine the optimal weights for each of our code smells when computing the CodeScore. This will be difficult because we will have to analyze user surveys to see which code smells matter more. We will have to determine which machine learning approach will give us the most accurate weights for our metrics. 
 
-Another challenge will be finding appropriate images for non-formula inputs, or for formula inputs which cannot be visualized in two or three dimensions. When the image cannot be rendered with our Formula Renderer module, we will need to display something to the user. This can perhaps be done through manual loading of images or through some image search over the web.
+Additionally, we have to learn how to parse source code effectively. This is crucial to our project since we are going to need to analyze code not only at a character by character level, but also at a logical level. We need to come up with a way to calculate all of our metrics without having to jump around too much in the source code itself. Otherwise, our application would take a long time to execute.
 
-Finally, there is the issue of displaying the image to the resulting image to the user. This must be done in an unobtrusive and helpful way, and will likely involve image processing and optimization for negative space. In cases where there is very little negative space, the opacity of the image must be adjusted to allow the original image to be seen even after the application's image is displayed. Determining the optimal settings for position and opacity will be difficult.
+Being able to analyze the code complexity of any arbitrary piece of software would be difficult as well. We would have to determine which inputs to send to the function in order to push it beyond its limits. After that, we would have to find a way to map the execution time to algorithmic complexity. This will have the tendency to use a lot of resources and time in our application, and we would ideally need to minimize this.
+
+Depending on the way we conduct our crowdsourcing component, another technical challenge may be to standardize all the data that we get from this experiment. To feed this data through our machine learning algorithms, we will need to have discrete variables. This may not be possible if we let users answer questions in an open way. This may limit the kind of data that we can collect from users. Finding out how to achieve a good balance between standardized responses and open ended responses as well as analyzing them will be a challenge.
 
 \subsection{Evaluation Criteria}
 \label{subsec:eval_criteria}
-Since our project aims to help students understand concepts in mathematics and science, we would evaluate our project to see how well we could help students understand these concepts as well as evaluate against current AR standards. 
 
-For the actual AR application, we want to be able to create a system that works seamlessly. To that end, we want to be able to reduce the latency between aiming the lens at an area of interest and the corresponding material being displayed in the application. This means that we will have to minimize the delay between detecting an area of interest in the real world, processing the area of interest and uploading its contents to our servers, determining what visual aid will help in this situation, responding to the client, and displaying the content to the user. Currently, system delay is a huge barrier for AR in the education space.  According to Handbook of Research on Educational Communications and Technology, system delay makes the virtual images ``lag behind" the real world which make them seem to ``swim around" \cite{jonassen2013handbook}. This has adverse effects on education as it inhibits registration, which is the ability for the human mind to recognize and track a particular object. We want to hit a target of a 4 second delay for our system from end to end. This is our goal since the processing for the data needs to be done in the cloud.
+Since our project aims to quantitatively analyze code to determine how good it is, our evaluation criteria will revolve around checking how accurate our algorithm is in achieve in this goal. We aim to test:
 
-We also need to evaluate ourselves on our performance on our platforms of choice. Specifically, we would test to make sure that our app runs smoothly on iOS devices. We hope to run our application using less than 80\% of the CPU on these devices. To test this, we can use Instruments in the Xcode IDE to check how much CPU our application is using. We target 80\% because this would make sure that our app does not use too many resources and that it would prolong battery life.
+\begin{itemize}
+\item How accurately we detect code smells.
+\item How accurately we determine code complexity and scalability.
+\item How accurate our analysis is when compared to human analysis.
+\end{itemize}
 
-To test usability and effectiveness, we would visit a school in Philadelphia and allow students there to use our application. We will conduct a survey amongst the students to see whether our application helped their ability to understand concepts in math and science. Our goal from this experiment would be to achieve an overall 40\% improvement. That is, have at least 4 out of every 10 children claim that it was easier to understand the concepts at hand. 
+We hope that by measuring across these three areas, we will be able to validate that our application works as expected. As a goal for the project, we hope to hit 90\% accuracy rates on the first two criteria and hope to beat human analysis at least 75\% of the time.
 
-We would first pick out two concepts that are typically difficult to understand given text and normal diagrams. For the first trial, we will pick two concepts that are explained using sentences or paragraphs of text without any diagrams. We will give each student the first concept and check to see how well they understand the material. We will then give them the second concept and our application to see how well they understand the material with the new visual aid. Then, we can repeat the experiment with two new concepts, but with diagrams this time. We would test whether or not our application can generate unique aids as well as whether our app is helpful in situations where there are already diagrams present. 
+For the detection of code smells, we can use precision (fraction of detected problems that are really problems) and recall (fraction of problems that are detected) to evaluate the performance. Our goal will be to achieve at least 90\% for both precision and recall with each code smell detector. To do this test systematically, we will feed code through our application that has a fixed number of code smells. For example, we feed in a piece of software that has a total of 10 code smells. What we will then do is check to see how many code smells our algorithm detects in the code. Some things we will have to look out for will be false positives and false negatives. In both these cases, it will imply that our algorithm is not accurate as it should be. We hope that our application will have a < 10\% rate for false results. 
 
-Another thing that we can do is test the actual user interface of our final product. Since we want to make it easier for students to understand material, we need to make our application so that it is easy to use. We will conduct simple usability experiments to test whether or not users are able to find everything useful within our app and conduct a survey to check whether or not the app was easy to use.
+On a related note to code smells, we will also test the output of our machine learning algorithm to see if the various code smells that were found were weighted properly. To this end, we could compute the "code smell score" by hand and see if it matches the score that was computed by our application. We hope that these figures will always be within 5\% of each other. This way, we can be certain that the output of our machine learning will be used correctly.
 
+To test code complexity and scalability, we can employ similar tests and expect similar results. We can craft a small snippet of code that has a particular theoretical runtime. For example, we can input the following snippet of Java into our application:
+
+\begin{verbatim}
+public static void foo(int n) {
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      System.out.println(n);
+    }
+  }
+}
+\end{verbatim}
+
+This function has a theoretical runtime complexity of $O(n^2)$. Our application should be able to take this function and systematically determine that the complexity is $O(n^2)$. Since algorithmic complexities are largely discrete, our application can either determine the correct complexity or it cannot. Over a trial of 50 snippets of code, we hope to achieve a 90\% accuracy rate. This means that we want at least 45 of our tests to match the theoretical algorithmic complexity. This will also give us a good indicator of how scalable the piece of software is.
+
+The last variant of testing that we can do is human testing. Essentially, we can give small software packages, comprising of 10 source files each, to both our application and real developers. Our application will compute the CodeScore as well as all of the other metrics about the code. Real developers will then use their best judgement to analyze the code and assign each of the projects CodeScores based on how they found code smells, how they weighted those code smells, how they analyzed complexity, etc. Our goal is to get to a point where the discrepancy between the CodeScores generated by our application and the real developers happens only 25\% of the time or less. To phrase it differently, we hope that at least 75\% of the time, there will be a rough match between the computed CodeScores. (Rough match is determined by +/- 5\%)
 \section{Research Timeline}
 \label{sec:research_timeline}
 Finally, we would like you to speculate about the pace of your
 research progress. This section need not be lengthy, we would just
 like you to specify some milestones so we can gauge your progress
 during our intermediate interviews. Let us follow through with our
-image recognition example:
-
-% The 'itemize' environment shown here, and its friend 'enumerate'
-% (shown below), are used to create indented\bulleted\outline style
-% lists.
-
-Already done
-Performed research on augmented reality. Began looking into OCR libraries, function renderers, and Natural Language Processing libraries.
-By Thanksgiving break
-Have a basic function renderer working in the cloud.
-By Christmas break
-Have basic OCR working and sending information to servers. iOS application can display images (without choosing optimal location/opacity)
-By the start of Spring term
-Have simple NLP working. Finished OCR and function renderer.
-By the end of March
-Have NLP working and choosing points of interest. Have basic image search working. iOS application can position images based on negative space.
-Reach goals
-Choose optimal opacity for rendered images based on amount of negative space. Allow users to interact with rendered images (rotate views of 3D functions, for example).
-
-
+internal code quality analyzer example:
 \begin{itemize*}
-	\item {\sc already completed}: Performed research on augmented reality. Began looking into OCR libraries, function renderers, and Natural Language Processing libraries.\vspace{3pt}
-	\item {\sc prior to thanksgiving} : Have a basic function renderer working in the cloud.\vspace{3pt}
-	\item {\sc prior to christmas} : Have basic OCR working and sending information to servers. iOS application can display images (without choosing optimal location/opacity).\vspace{3pt}
-\item {\sc by the start of spring term} : Have simple NLP working. Finished OCR and function renderer.\vspace{3pt}	
-\item {\sc by the end of march} : Have NLP working and choosing points of interest. Have basic image search working. iOS application can position images based on negative space.\vspace{3pt}
-\item {\sc reach goals} : Choose optimal opacity for rendered images based on amount of negative space. Allow users to interact with rendered images (rotate views of 3D functions, for example). \vspace{3pt}
-\item {\sc completion tasks} : Verify implementation is meets requirements. Conduct effectiveness and ease of use testing. Complete write-up.\vspace{3pt}
-\item {\sc if there's time} : Investigate machine learning techniques to display more useful content.
+	\item {\sc already completed}: Performed research on measuring internal code quality. Began looking into parsing techniques for source code and detecting code smells.\vspace{3pt}
+	\item {\sc prior to thanksgiving} : Have a basic worker class and controller running. The controller should be able to spawn off workers when the server-side repo is updated.\vspace{3pt}
+	\item {\sc prior to christmas} : Have worker class implemented. Should be able to detect code smells and report back to controller. Controller should be able to reduce the output.\vspace{3pt}
+\item {\sc by the start of spring term} : Have sample code snippets made for MTurk.\vspace{3pt}	
+\item {\sc by the end of march} : Should have results from MTurk experiments. Implement some form of machine learning so that we can analyze the results.\vspace{3pt}
+\item {\sc reach goals} : Investigate how to change design to map reduce. Look for more code metrics to measure and incorporate. Add additional code smells. \vspace{3pt}
+\item {\sc completion tasks} : Verify implementation is meets requirements. Conduct testing mentioned in evaluation section. Complete write-up.\vspace{3pt}
 \end{itemize*}
 
 % We next move onto the bibliography.
 \bibliographystyle{plain} % Please do not change the bib-style
-\bibliography{prop_spec}  % Just the *.BIB filename
+\bibliography{codescore}  % Just the *.BIB filename
 
 % Here is a dirty hack. We insert so much vertical space that the
 % appendices, which want to begin in the left colunm underneath
