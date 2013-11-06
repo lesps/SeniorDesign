@@ -24,7 +24,7 @@
 % We setup the parameters to our title header before 'making' it. Note
 % that your proposals should have actual titles, not the generic one
 % we have here.
-\title{CIS400/401 CodeScore}
+\title{CodeScore}
 \subtitle{Dept. of CIS - Senior Design 2013-2014\thanks{Advisor: Chris Murphy (cdmurphy@cis.upenn.edu).}}
 \numberofauthors{4}
 
@@ -40,7 +40,7 @@ Allison Pearce \\ \email{alpearce@upenn.edu} \\ Univ. of Penn \\ Philadelphia, P
 % Next we write out our abstract -- generally a two paragraph maximum,
 % executive summary of the motivation and contributions of the work.
 \begin{abstract}
-  \textit{We propose an application to quantitatively analyze code based on the presence of code smells and algorithmic complexity. Our application will then compute a CodeScore, which is a single metric whose value will immediately let someone determine that piece of code's quality. Our primary motivation for this project is to enable people to not only improve their own coding ability by getting feedback on their code but to allow them to objectively determine whether a piece of software is good. Similar applications have been built in the past, but they largely consist of techniques which determine whether code smells are present in code. Our application aims to not only do this, but also learn which code smells are more harmful than others and come up with a single metric that determines the overall quality of a piece of software.}
+  \textit{The technology industry lacks automated tools for evaluating software quality. These tools would be helpful for individuals desiring to improve their abilities, recruiters searching for top programmers, and educators needing to quickly assess student performance. We propose to develop an application that calculates a metric for internal quality by detecting code smells, easily recognized design weaknesses that may indicate more significant problems within the system. The program will recognize code smells using a set of specific rules. It will then use the results to compute a CodeScore: a single value that reflects the maintainability and understandability of the piece of software based on the presence of code smells. }
 \end{abstract}
 
 % Then we proceed into the body of the report itself. The effect of
@@ -50,28 +50,27 @@ Allison Pearce \\ \email{alpearce@upenn.edu} \\ Univ. of Penn \\ Philadelphia, P
 % 'ref' command.
 \section{Introduction}
 \label{sec:intro}
-The application that we are proposing will quantitatively analyze software to determine its code quality. To this end, our application will test for the presence of code smells, analyze code complexity, and compute a final score that will help determine how good the software is.
- 
-Code smells are defined as symptoms in code that indicate deeper problems in the software. Some common code smells include:
+Software failures result in annoyed users at best, and they can cause catastrophic system failures at worst. Six people received massive radiation overdoses from a radiation therapy device in one of the canonical examples of a fatal software error \cite{leveson1995therac}. Failures are consequences of poor software quality. Software quality is defined as ``conformance to explicitly stated functional and performance requirements, explicitly documented development standards, and implicit characteristics that are expected of all professionally developed software" \cite{pressman1997}. In addition to causing failures, disregard for software quality is expensive and inefficient, requiring more dollars and man-hours to maintain, test, and add features to project than should be necessary. An increasing appreciation of well-designed software has been manifested in the international standard for software quality, ISO/IEC 25010. The standard affirms the importance of specifying and measuring characteristics of quality, and it defines quality models intended to aid in accomplishing these goals [cite this].
+
+Software quality is commonly divided into internal quality and external quality. External quality describes how well the software meets performance expectations, and encompasses characteristics such as correctness, accuracy, integrity, robustness, reliability, usability, adaptability, and efficiency. Internal quality describes how well the software was designed and implemented, and is concerned with maintainability, flexibility, portability, reusability, readability, understandability, and testability \cite{mcconnell1993codecomplete}. Internal and external quality are closely related, and deficiencies in internal quality lead to deficiencies in external quality. For example, code that is difficult to understand will also be difficult to adapt to new requirements, and code that cannot be easily tested will likely be incorrect or unreliable. 
+
+
+%projects bigger -> quality more important
+%costs in terms of time, efficiency, monies, man-hours
+
+One way to diagnose internal quality issues is by detecting code smells. Code smells are easily recognized design weaknesses that may indicate deeper, more significant problems within the system. Some common code smells include:
 \begin{itemize}
-\item Classes that have too many lines of code
-\item Methods that have too many lines of code
-\item Duplicated code across the same piece of software
-\item General lack of comments when they are needed
-\item Long list of parameters for functions
-\item Conditional statements in the code are too complex
-\item Unhelpful naming conventions
+\item Classes or methods that have too many lines of code
+\item Duplicated code
+\item Long lists of parameters for functions
+\item Overly complex conditional logic
+\item Inconsistent or uncommunicative naming conventions
 \end{itemize}
 
-The presence of code smells is typically correlated with low code quality since they directly affect the software's maintainability and readability. Although some work has been done in this area to detect the presence of code smells in software, what we are proposing with regards to code smells is unique. We are proposing a mechanism and algorithm that will learn which code smells are considered to be more detrimental than others and devise a way to assign weights to each kind of code smell. 
+Individual code smells are directly related to problems with specific aspects of internal quality. For example, overly complex conditional logic and inconsistent naming conventions hurt understandability and readability. Duplicated code implies that changes will have to be made not once but everywhere that the duplication occurs, which hurts maintainability. 
 
-For code complexity analysis, we will devise a way to see how arbitrary pieces of code perform when provided large inputs. This will allow us to test two key metrics: scalability and complexity. If the code can handle large inputs with relatively logarithmic time complexity, this will ensure that the code is likely the most optimal that it can be as well as scalable. Both of these characteristics are considered to be valuable when evaluating code.
+The proposed application tests for the presence of code smells in order to evaluate internal quality. We will define rules for custom algorithms to detect code smells, and the results of the detection will be used compute an internal quality score for a code sample. The program focuses specifically on how code smells relate to two elements of internal software quality, maintainability and understandability. These elements are underemphasized in most classroom settings. Students work quickly and haphazardly to meet deadlines and never revisit their program after turning it in, so there is no need to write maintainable or understandable code.  However, understandability and maintainability are critical outside of the classroom, where teams of developers need to understand code they did not write, and to maintain it for years as the product evolves. The proposed tool will help students assess and improve these necessary software engineering skills by providing objective feedback to make them aware of their weaknesses. Computer science teachers can use the the application when grading assignments to assess quality without spending hours reading through each student's source code. It will also allow recruiters to identify potential employees who will contribute to their company's products with a high regard for quality. Overall, this tool will help the technology industry to train and recruit a strong developer workforce who will write programs that are internally sound. 
 
-We think that such an application will be useful in a number of fields. It can help developers improve their own code once they know which facets to improve on. Given that our application can determine what makes a piece of software bad, it can also give tips and hints as to what can be done to improve. Another use case would be for recruiting technical talent. Often, technical recruiters glance at resumes and determine whether or not to proceed with a candidate. Our application will allow recruiters to effectively determine which candidates have the strongest coding ability. This will help them save time and money by not interviewing the wrong candidates. For Computer Science teachers, the application provides an additional metric that could be used to grade assignments. Not only can teachers now check code for accuracy in functionality, they can also evaluate their students on the quality of their code. This will help students become better developers.
-
-% The header of this document might have been a little intimidatating
-% to beginners. Notice once you are in the body of the document,
-% however, LaTeX commands are minimal and 'normal text' is frequent.
 \section{Related Work}
 \label{sec:related_work}
 In this section, we will provide background information on the different methods of analyzing code, the standards for measuring code quality, and various services and applications that already strive to provided quantitative analyses of code quality.
