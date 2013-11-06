@@ -74,22 +74,22 @@ We think that such an application will be useful in a number of fields. It can h
 % however, LaTeX commands are minimal and 'normal text' is frequent.
 \section{Related Work}
 \label{sec:related_work}
-In this section, we will provide background information on the different methods of analyzing code, the standards for measuring code quality, and various services and applications that already strive to provided quantitative analyses of code quality.
+In this section, we will provide background information on the different methods of analyzing code, the standards for measuring code quality, and various services and applications that already strive to provide quantitative analyses of code quality.
 
 \subsection{Code Analysis Methodologies}
 The majority of existing applications for measuring code quality rely on well-established code analysis techniques. These techniques involve breaking code down into specific units and measuring the counts of these units. Such techniques include parsing the source code into control structures \cite{mccabe1976complexity}, tokens \cite{halstead1977elements}, assembly instructions \cite{park1992software}, or objects \cite{chidamber1994metrics}. Once the source code has been parsed into some unit (this process is called static analysis), the attributes of the code, such as reliability, security, efficiency, size, and maintainability can be measured from the parsed results. The actual approach to measuring these attributes originated in \cite{boehm1976quantitative} and later became part of the ISO/IEC 25000 series of standards relating to the quality and evaluation of software \cite{iso2011iec}. These techniques and standards comprise the foundation for today's code quality measurement applications, and they will be the basis for our approach as well.
 
 \subsection{Ohloh}
-Launched in January of 2006, Ohloh \cite{allen2009ohloh} is web service and online community owned by Black Duck Software which provides basic metrics for over 650,000 open source projects containing over 24,000,000,000 lines of code located in over 620,000 source code repositories and managed by over 3,000,000 contributors. These projects are retrieved from source control repositories and analyzed. Metrics such as lines of code, amount of source code comments, and estimated software cost (based on the COCOMO model \cite{boehm2000software}) are provided, along with commit statistics, project activity, and programming language detection. This data is graphically displayed when one views a projects information on the site. Ohloh also provides global statistics across all projects for different programming languages and contributor statistics for different authors of open source code. 
+Launched in January of 2006, Ohloh \cite{allen2009ohloh} is web service and online community owned by Black Duck Software which provides basic metrics for over 650,000 open source projects containing over 24,000,000,000 lines of code located in over 620,000 source code repositories and managed by more than 3,000,000 contributors. These projects are retrieved from source control repositories and analyzed. Metrics such as lines of code, amount of source code comments, and estimated software cost (based on the COCOMO model \cite{boehm2000software}) are provided, along with commit statistics, project activity, and programming language detection. This data is graphically displayed when one views a project's information on the site. Ohloh also provides global statistics across all projects for different programming languages and contributor statistics for different authors of open source code. 
 
-Ohloh's primarily focuses on tracking project/contributor activity for large open-source projects, with less attention being paid to actually providing quantitative measurements of code quality.
+Ohloh primarily focuses on tracking project/contributor activity for large open-source projects, with less attention being paid to actually providing quantitative measurements of code quality.
 
 \subsection{Common Weakness Enumeration}
 The Common Weakness Enumeration (CWE) \cite{mitre2006cwe} is a community-developed list of software weaknesses hosted by the MITRE Corporation. The CWE was developed with the intention of providing:
 
 \begin{itemize}
 \item a common standard of identifying, mitigating, and preventing software weaknesses.
-\item a common source of source of measuring weaknesses for software security tools.
+\item a common source of measuring weaknesses for software security tools.
 \item a common language for describing the various types of software weaknesses that exist in computer architecture, software design, and source code.
 \end{itemize}
 
@@ -100,7 +100,7 @@ CWE began with the Common Vulnerabilities and Exposures (CVE) list in 1999 \cite
 CWE, though possibly a valuable resource for our endeavors, primarily strives to provide standards relating to the weaknesses of code in terms of security.
 
 \subsection{Other Static Code Analysis Tool}
-A wide variety of other static code analysis tools also exist. The Web Application Security Consortium provides community-sourced list of some recent tools for code analysis \cite{webappsec2012}. Some of these tools include:
+A wide variety of other static code analysis tools also exist. The Web Application Security Consortium provides a community-sourced list of some commonly used tools for code analysis \cite{webappsec2012}. Some of these tools include:
 
 \begin{itemize}
 \item CodeSonar - A full-featured code analysis tool with binary analysis, results visualization, and a wide variety of metrics. CodeSonar can detect numerous code faults and security risk within projects containing up to millions of lines of Java, C, or C++ code.
