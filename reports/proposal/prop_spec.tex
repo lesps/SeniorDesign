@@ -75,13 +75,14 @@ The proposed application tests for the presence of code smells in order to evalu
 \label{sec:related_work}
 In this section, we will provide background information on the different methods of analyzing code, the standards for measuring code quality, and various services and applications that already strive to provide quantitative analyses of code quality.
 
+
 \subsection{Code Analysis Methodologies}
 The majority of existing applications for measuring code quality rely on well-established code analysis techniques. These techniques involve breaking code down into specific units and measuring the counts of these units. Such techniques include parsing the source code into control structures \cite{mccabe1976complexity}, tokens \cite{halstead1977elements}, assembly instructions \cite{park1992software}, or objects \cite{chidamber1994metrics}. Once the source code has been parsed into some unit (this process is called static analysis), the attributes of the code, such as reliability, security, efficiency, size, and maintainability can be measured from the parsed results. The actual approach to measuring these attributes originated in \cite{boehm1976quantitative} and later became part of the ISO/IEC 25000 series of standards relating to the quality and evaluation of software \cite{iso2011iec}. These techniques and standards comprise the foundation for today's code quality measurement applications, and they will be the basis for our approach as well.
 
 \subsection{Ohloh}
 Launched in January of 2006, Ohloh \cite{allen2009ohloh} is web service and online community owned by Black Duck Software which provides basic metrics for over 650,000 open source projects containing over 24,000,000,000 lines of code located in over 620,000 source code repositories and managed by more than 3,000,000 contributors. These projects are retrieved from source control repositories and analyzed. Metrics such as lines of code, amount of source code comments, and estimated software cost (based on the COCOMO model \cite{boehm2000software}) are provided, along with commit statistics, project activity, and programming language detection. This data is graphically displayed when one views a project's information on the site. Ohloh also provides global statistics across all projects for different programming languages and contributor statistics for different authors of open source code. 
 
-Ohloh primarily focuses on tracking project/contributor activity for large open-source projects, with less attention being paid to actually providing quantitative measurements of code quality.
+Ohloh primarily focuses on tracking project/contributor activity for large open-source projects. Our proposed application will focus more on providing code quality-oriented metrics.
 
 \subsection{Common Weakness Enumeration}
 The Common Weakness Enumeration (CWE) \cite{mitre2006cwe} is a community-developed list of software weaknesses hosted by the MITRE Corporation. The CWE was developed with the intention of providing:
@@ -94,9 +95,9 @@ The Common Weakness Enumeration (CWE) \cite{mitre2006cwe} is a community-develop
 
 CWE supports the discovery of common types of software security flaws such as buffer overflows, handler errors, pathname traversals, and resource management errors (amongst others) within code.
 
-CWE began with the Common Vulnerabilities and Exposures (CVE) list in 1999 \cite{mitre2005cve}. As part of the National Institute of Technology's (NIST) Software Assurance Metrics and Tool Evaluation (SAMATE) project \cite{nist2005samate}, MITRE expanded upon the CVE list with the Preliminary List of Vulnerability Examples for Researchers (PLOVER) \cite{christey2005plover}. PLOVER was the first attempt to take real-world examples of software vulnerabilities and abstract them into common classes of more general vulnerabilities that can arise during the software development process. The goal of PLOVER was to make this information available to a wide variety of people so that they may use it for a variety of purposes. CWE encompasses much of the CVE list and expands upon PLOVER by establishing community-developed definitions and descriptions of these common weaknesses.
+CWE began with the Common Vulnerabilities and Exposures (CVE) list in 1999 \cite{mitre2005cve}. As part of the SAMATE project \cite{nist2005samate}, MITRE later expanded upon the CVE list with the Preliminary List of Vulnerability Examples for Researchers (PLOVER) \cite{christey2005plover}. PLOVER was the first attempt to take real-world examples of software vulnerabilities and abstract them into common classes of more general vulnerabilities that can arise during the software development process. The goal of PLOVER was to make this information available to developers, researchers, and analysts so that they may use it for a variety of purposes, with the goal of improving code security. CWE encompasses much of the CVE list and expands upon PLOVER by establishing community-developed definitions and descriptions of these common weaknesses.
 
-CWE, though possibly a valuable resource for our endeavors, primarily strives to provide standards relating to the weaknesses of code in terms of security.
+CWE, though possibly a valuable resource for our endeavors, primarily strives to provide standards relating to the weaknesses of code in terms of security. This may be a valuable resource for our proposed application, as many code weaknesses are indicative of, or are themselves, code smells.
 
 \subsection{Other Static Code Analysis Tool}
 A wide variety of other static code analysis tools also exist. The Web Application Security Consortium provides a community-sourced list of some commonly used tools for code analysis \cite{webappsec2012}. Some of these tools include:
@@ -105,10 +106,10 @@ A wide variety of other static code analysis tools also exist. The Web Applicati
 \item CodeSonar - A full-featured code analysis tool with binary analysis, results visualization, and a wide variety of metrics. CodeSonar can detect numerous code faults and security risk within projects containing up to millions of lines of Java, C, or C++ code \cite{grammatech2013codesonar}.
 \item Klocwork Insight - Provides a wide range of metrics with detailed reports and offers integration with a variety of IDEs \cite{klocwork2013insight}.
 \item FindBugs - Open-source code analysis tool which is capable of detecting many different types of bugs in Java code \cite{pugh2013findbugs}.
-\item Yasca - An open-source code analysis tool which combines the functionality of many other open-source code analysis tools in order to provide quality and security metrics for code written in a wide range of languages \cite{scovetta2007yasca}.
+\item Yasca - An open-source code analysis tool combining the functionality of many other open-source code analysis tools in order to provide quality and security metrics for code written in a wide range of languages \cite{scovetta2007yasca}.
 \end{itemize}
 
-The majority of existing code analysis tools are either commercial applications catering to companies, or open-source tools with limited functionality.
+Our proposed solution will attempt to provide more functionality than the majority of open-source, similar applications. We aim to provide quality of functionality similar to commercial-grade applications, while making our solution accessible to a wider audience and not merely for large companies.
 
 \section{Project Proposal}
 \label{sec:project_proposal}
