@@ -153,9 +153,9 @@ metrics using the parsed results.
 The actual approach to measuring these attributes originated in
 \cite{boehm1976quantitative} and later became part of the ISO/IEC 25000 series
 of standards relating to the quality and evaluation of software
-\cite{iso2011iec}. These techniques and standards comprise the foundation for
+\cite{iso2011iec}. These techniques and standards form the foundation for
 today's code quality measurement applications, and they are the basis for our
-approach, as well.
+approach as well.
 
 \subsection{Ohloh}
 Launched in January of 2006, Ohloh \cite{allen2009ohloh} is web service and
@@ -267,18 +267,18 @@ Most of the current applications are principally concerned with security,
 reliability, correct functionality, efficiency, and other aspects of external quality. Our tool 
 focuses on internal quality, which can help prevent problems with external
 quality, thus allowing developers to spend less time testing and fixing bugs and
-more time on new products and features. Additinally, many of the existing tools
+more time on new products and features. Additionally, many existing tools
 target industry developers, but one of our primary target audiences will be
-students, who need to need to develop an appreciation for internal quality
+students. Students especially need to develop an appreciation for internal quality
 before entering the workforce or academia. Finally, our solution attempts to
-provide more functionality than the majority of open-source, similar
+provide more functionality than the majority of similar open-source
 applications. We aim to provide quality of functionality similar to
 commercial-grade applications, while making our solution accessible to a wider
-audience and not merely for large companies. 
+audience.
 
-We have designed a program called CodeScore that quantitatively assesses code
+We designed a program called CodeScore that quantitatively assesses code
 quality. It is an objective tool for performing a task that seems inherently
-subjective. However, the characterization of software quality has been the topic
+subjective. The characterization of software quality has been the topic
 of much discussion in both academia in industry. Using as a foundation the
 components of internal quality described in \cite{iso2011iec} and similar
 reports, our program further dissects these components into specific patterns
@@ -286,14 +286,13 @@ that can be identified in source code. The holistic scoring system is built up
 from a large collection of these specific, detectable indicators to provide one
 comprehensive measure of quality.
 
-CodeScore focuses on evaluating internal quality and makes use of static code
-analyses. This allows for assessment of source code without bias from different
+CodeScore focuses on evaluating internal quality, and as such primarily uses static code
+analysis techniques. These allows for the assessment of source code without bias from different
 system architectures or environments. Code smells provide a powerful but simple
 indicator of internal quality because they are specific and detectable, they
 have a clear relationship with internal quality, and because there is
 existing work to use as a reference \cite{moha2009duchien}, \cite{palomba}. The
-program currently focuses on just two important metrics of internal quality,
-understandability and maintainability. 
+program currently focuses on understandability and maintainability. 
 
 \emph{Understandability} is a measure of how easy a code sample is for a human to
 interpret. It can be estimated in part by the length of message chains (a code
@@ -321,8 +320,8 @@ understandability and maintainability run in parallel on all files in the source
 code and the revision history. The results of the detections are then combined 
 into an overall score for the code sample, analogous to a grade on an essay. The program 
 also provides a detailed score report describing the number, type, and location of
-problems in the code. This report can be shared with recruiters as a quick and objective
-evaluation of a candidate's programming ability, used as a tool for
+problems in the code. This report can be shared as a quick and objective
+evaluation of one's programming ability, used as a tool for
 self-improvement, or incorporated into teachers' grading rubrics. 
 
 The detectors are the most complicated component of the system and present the
