@@ -237,7 +237,7 @@ those that can be detected using revision logs.
 
 \subsection{JOCS}
 Judgment of Code Style (JOCS) was a CIS 400/401 project in the 2012-2013
-academic year [CITE THIS SHIT]. Their goal was to create a tool for an automated
+academic year \cite{close2013jocs}. Their goal was to create a tool for an automated
 analysis of code style. Such a tool would be useful is assigning the style grade
 often associated with assignments in introductory programming classes, such as
 CIS 110 or 120 at the University of Pennsylvania. Features of interest included
@@ -447,10 +447,11 @@ Code smells that affect both understandability and maintainability are long meth
 and large/complex classes. Both of these will be detected by finding the class
 or method declaration using the AST and analyzing the contents for length.
 Additionally, to measure class complexity, measures such as the McCabe
-Cyclomatic Complexity [**CITE THIS**] can be calculated. 
+Cyclomatic Complexity \cite{mccabe1976complexity} can be calculated. 
 
 Code smells that affect primarily maintainability are duplicated code,
-feature envy, and shotgun surgery. The Java Reflection API [**CITE THIS TOO**]
+feature envy, and shotgun surgery. The Java Reflection API
+\cite{oracle2013reflection}
 faciliates duplicate code detection. Feature envy, indicative of an
 inappropriate relatinship between two classes, will require a more in-depth
 analysis several structures in the AST. We can find references to each class
