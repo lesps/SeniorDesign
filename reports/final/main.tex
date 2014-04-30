@@ -426,8 +426,7 @@ once with the custom settings.
 
 To perform the code smell detection, the controller class
 generates $n$ worker threads, where $n$ is the number of detection algorithms to be
-performed on the software sample. Currently, $n=8$ because the program supports $8$
-different detectors. Each of the workers performs a specific detection task on
+performed on the software sample. Currently, $n=8$. Each of the workers performs a specific detection task on
 each uploaded file and then sends results back to the scoring module. The
 type of result reported to the scoring module depends on the detector, but in
 most cases the detector reports a count of the number of violations for that
