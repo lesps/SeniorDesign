@@ -1,6 +1,4 @@
 
-%TODO: check for tense issues
-%TODO: Make sure no citations on new lines
 %TODO: cite the AST API 
 
 
@@ -397,9 +395,15 @@ questions, and a project showcase.
 
 All processing for CodeScore happens on an Amazon EC2 cloud processing machine.
 EC2 is a service that provides resizable computing capacity in the cloud. 
-Users upload Java code in the form of a single .java file or a zip file
-containing one or more .java files to the EC2 instance through our website, which
-we developed in PHP. The preferences 
+Users upload Java code in the form of a single .java file or a zip file under
+10MB in size containing one or more .java files and a preferences file to the EC2 instance through our website, which
+we developed in PHP. The software ensures that the uploaded project is not
+malicious using basic validation techniques that search for traits that exist in
+malware (e.g. known checksums or invalid filetypes). After passing validation,
+the upload is indexed on Amazon S3. S3 stands for Simple Storage Service and is
+a component of the Amazon AWS suite of web services. After indexing, the server
+launches a process that scans for all appropriate files (Java files or
+preferences files) and saves some of the metadata to include in the report. The preferences 
 file is encoded in JSON and includes information that is specific to each detector, 
 such as thresholds for certain code smells. It also includes optional weights if
 the user would like to change how much a given detector influences the overall
@@ -439,6 +443,10 @@ CodeScore. Each file is weighted by importance, considering factors such as the
 number of lines it contributed to the project and the number of times methods or
 objects from that file are used throughout the project. The end result of this 
 process is a single score that gives a user an at-a-glance measure of the internal quality of a project.
+The web application also provides more detailed feedback using
+HighCharts~\cite{highcharts} , a
+JavaScript framework used for making graphs online. Users can navigate to view
+reports for a specific file or a general overview.
 
 \begin{figure*}[ht]
 	\begin{center}
@@ -463,6 +471,14 @@ makes the program easy to adapt to additional programming languages in the futur
 Most object-oriented code smells have the same properties from the perspective of the AST,
 which abstracts away the specifics of individual programming languages. A sample
 abstract syntax tree and the Java code it represents can be seen in Figure~\ref{fig: ast}.
+
+The web application (techruit.me) is implementented in PHP and makes use of search engine
+optimization techniques. Custom PHP scripts generate page content, comment, and optimize
+formatting for each view on the website. The website is also integrated with
+social media using Facebook's Open Graph tags. This allow the page to be liked and shared on
+Facebook and provides information to other users when the page receives
+attention. Several screenshots of the web application can be seen in Appendix
+A.
 
 \begin{figure*}[ht!]
 	\begin{center}
@@ -490,13 +506,13 @@ using MapReduce \cite{dean2008mapreduce}.
 
 \section{Results}
 
-CodeScore has been evaluated on three main criteria:
-
+CodeScore has been evaluated on four main criteria:
 
 \begin{itemize}
 	\item How accurately code smells are detected.
 	\item How the CodeScore compares to human grading.
 	\item How quickly the analysis is completed.
+	\item The success of the website.
 \end{itemize}
 
 For the first criterion, we designed user surveys in which users identified
@@ -534,11 +550,22 @@ sessions.
 
 To analyze runtime, we pulled additional open source projects with up to
 10,000 lines of code to use as inputs to the system. Projects of this size were not feasible to ask user study
-partipants to analyze in the detector and scoring accuracy studies, but they were informative for collecting runtime
-information. The speed of execution varied roughly linearly with the number of lines of code in
+partipants to analyze in the detector and scoring accuracy studies, but they were informative for collecting runtime information. The speed of execution varied roughly linearly with the number of lines of code in
 preliminary tests. The bottleneck in runtime seems to be the Java Abstract
 Syntax Tree API. However, the benefits of using the AST API in terms of simplicity and
 modularity outweigh the slight slowness in processing. See Figure~\ref{fig:runtime} for a graph of the runtime analysis results.
+
+The success of the web application can be quantified using search results and various analytics
+provided by Google. At the time of publishing of this report, the website (techruit.me) ranks in 
+the top two results when searching Google for ``techruit". The website is in the
+top 8 results on
+Google and top 4 on Bing when the search term is ``codescore recruiting." The
+landing page received over 2,000 pageviews during the time of development, which
+is highly promising considering that there was no formal marketing. The bounce
+rate, or the number of users who are interested enough to view other pages after
+the landing page, is about $50\%$. About $10.5\%$ of users continue to look at
+the developers portal and $8.3\%$ look at the recruiters portal.
+
 
 \begin{figure}[ht]
 	\begin{center}
@@ -619,6 +646,26 @@ helps connect recruiters with talented programmers.
 % hard enough, there is probably a command to do exactly this (and
 % wouldn't need tweaked after edits).
 \vspace{175pt}
+\appendix
+\section{Web Application Screenshots}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=500px]{report_overview1}
+	\end{center}
+	\vspace{-12pt}
+	\caption{Top of Report Page}
+	\label{fig:report1}
+\end{figure}
+
+\vspace{50pt}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=500px]{sample_candidate}
+	\end{center}
+	\vspace{-12pt}
+	\caption{Sample Candidate Profile}
+	\label{fig:candidate}
+\end{figure}
 
 % We then use appendices to share some additional information with
 % you, though you won't need appendices in your own proposal.
