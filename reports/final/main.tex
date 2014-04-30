@@ -150,6 +150,8 @@ user uploads their code to be analyzed via the web interface, each detector runs
 sample. The results of the detections are fed to a scoring module to compute an
 internal quality score, the CodeScore, for the piece of software. The CodeScore
 and detailed reports with suggestions for improvement are returned to the user.
+The detectors used to calculate the CodeScore are accurate, and the CodeScore
+itself correlates well with human assessment.
 
 \section{Related Work}
 \label{sec:related_work}
@@ -169,7 +171,7 @@ Once the source code has been parsed into some unit (this process is called
 static analysis), the attributes of the code, such as reliability, security,
 efficiency, size, and maintainability can be measured by calculating various
 metrics using the parsed results.
-The actual approach to measuring these attributes originated in\cite{boehm1976quantitative}
+The actual approach to measuring these attributes originated in~\cite{boehm1976quantitative}
 and later became part of the ISO/IEC 25000 series
 of standards relating to the quality and evaluation of software
 \cite{iso2011iec}. These techniques and standards form the foundation for
@@ -181,7 +183,7 @@ Launched in January of 2006, Ohloh \cite{allen2009ohloh} is web service and
 online community owned by Black Duck Software which provides basic metrics for
 over 650,000 open source projects containing over 24 billion lines of code
 located in over 620,000 source code repositories and managed by more than
-3,000,000 contributors. These projects are retrieved from source control
+3 million contributors. These projects are retrieved from source control
 repositories and analyzed. Metrics such as lines of code, amount of source code
 comments, and estimated software cost (based on the COCOMO model
 \cite{boehm2000software}) are provided, along with commit statistics, project
@@ -264,7 +266,7 @@ line length, modularity, and consistency. They used machine learning to compute
 a single score from the features. CodeScore will make use of similar techniques,
 but the two projects will be using mostly non-overlapping feature sets and
 different strategies for identifying them. Our focus is not on style but on code
-smells as they relate to internal quality, which ultimately affects the
+smells as they relate to internal quality, which ultimately affect the
 correctness, efficiency, and overall external quality of the program. 
 
 \subsection{Other Static Code Analysis Tools}
@@ -361,11 +363,10 @@ and the scoring module. CodeScore includes detectors for the following code smel
 
 The detectors are the most complicated component of the system and present the
 greatest technical challenges. Each code smell requires a unique detection
-algorithm, sometimes involving analysis of multiple classes together or complex
-parsing. The detectors search for all possible patterns indicative of a
+algorithm. The detectors search for all possible patterns indicative of a
 particular code smell using the syntactical structure of the program. They track the number and location of all 
-violations, compiling them into comprehensive reports in javascript object notation (JSON) for interpretation by
-other modules in the system. In detectors which equire thresholds, 
+violations, compiling them into comprehensive reports in JavaScript Object Notation (JSON) for interpretation by
+other modules in the system. In detectors which require thresholds, 
 such as the maximum depth allowed for nested conditionals, the program's default
 parameters can be overriden by inputting custom parameters.
 
@@ -380,7 +381,8 @@ individual file in the project, graphs displaying the frequency of violations
 for each metric, and specific suggestions for improvement that include line
 numbers and snippets from the user's code. This report can be shared as a quick and objective
 evaluation of one's programming ability, used as a tool for
-self-improvement, or incorporated into teachers' grading rubrics. The app also charts CodeScores for revisions
+self-improvement, or incorporated into teachers' grading rubrics. The
+application also charts CodeScores for revisions
 of projects that are uploaded for re-assessment so that the user can track
 improvement over time.
 
@@ -395,15 +397,14 @@ questions, and a project showcase.
 
 All processing for CodeScore happens on an Amazon EC2 cloud processing machine.
 EC2 is a service that provides resizable computing capacity in the cloud. 
-Users upload Java code in the form of a single .java file or a zip file under
-10MB in size containing one or more .java files and a preferences file to the EC2 instance through our website, which
-we developed in PHP. The software ensures that the uploaded project is not
+Users upload Java code in the form of a single .java file or a zip file to an
+Amazon S3 bucket through our website. S3 stands for Simple Storage Service and is
+a component of the Amazon AWS suite of web services. The software ensures that the uploaded project is not
 malicious using basic validation techniques that search for traits that exist in
 malware (e.g. known checksums or invalid filetypes). After passing validation,
-the upload is indexed on Amazon S3. S3 stands for Simple Storage Service and is
-a component of the Amazon AWS suite of web services. After indexing, the server
-launches a process that scans for all appropriate files (Java files or
-preferences files) and saves some of the metadata to include in the report. The preferences 
+the upload is indexed on Amazon RDS. Then the server
+launches a process that unzips the archive if necessary and scans for all appropriate files (Java files or
+preferences files). It saves some of the metadata to include in the report. The preferences 
 file is encoded in JSON and includes information that is specific to each detector, 
 such as thresholds for certain code smells. It also includes optional weights if
 the user would like to change how much a given detector influences the overall
@@ -423,30 +424,32 @@ once with the custom settings.
 	\label{fig: json}
 \end{figure}
 
-When software is uploaded to the endpoint, the controller class
+To perform the code smell detection, the controller class
 generates $n$ worker threads, where $n$ is the number of detection algorithms to be
 performed on the software sample. Currently, $n=8$ because the program supports $8$
 different detectors. Each of the workers performs a specific detection task on
 each uploaded file and then sends results back to the scoring module. The
 type of result reported to the scoring module depends on the detector, but in
-most cases the detector reports a count of the number of violations of that
+most cases the detector reports a count of the number of violations for that
 metric in each file normalized to a percentage between zero and one hundred. The
 percentage represents how acceptable the file is with regard to that particular
 code smell, taking into account the length of the file and the number of
 violations. 
 
 The scoring module combines all of the normalized detector outputs into a
-weighted average representing the subscore for a particular file. Some detectors
+weighted average representing the subscore for a particular file. In the default
+configuration, some detectors
 are weighted more heavily than others. These weights are based on experiments
 and user surveys. The subscores for each file are combined into the final
 CodeScore. Each file is weighted by importance, considering factors such as the
-number of lines it contributed to the project and the number of times methods or
-objects from that file are used throughout the project. The end result of this 
+number of lines it contributed to the project and the number of references to methods or
+objects from that file throughout the project. The end result of this 
 process is a single score that gives a user an at-a-glance measure of the internal quality of a project.
 The web application also provides more detailed feedback using
-HighCharts~\cite{highcharts} , a
+HighCharts~\cite{highcharts}, a
 JavaScript framework used for making graphs online. Users can navigate to view
-reports for a specific file or a general overview.
+reports for a specific file or a general overview. Example reports are shown in
+Appendix A.
 
 \begin{figure*}[ht]
 	\begin{center}
@@ -458,7 +461,7 @@ reports for a specific file or a general overview.
 \end{figure*}
 
 The program controller, scoring module, and all detectors are implemented in
-Java. Multithreading and concurrency of the detectors is accomplished Java's threading libraries
+Java. Multithreading and concurrency of the detectors is accomplished with Java's threading libraries
 and a custom worker thread pool. The detection algorithms use the Eclipse Java Abstract 
 Syntax Tree (AST) API to parse the
 Java code as a first step in finding code smells. Traversing the AST allows the
@@ -472,10 +475,10 @@ Most object-oriented code smells have the same properties from the perspective o
 which abstracts away the specifics of individual programming languages. A sample
 abstract syntax tree and the Java code it represents can be seen in Figure~\ref{fig: ast}.
 
-The web application (techruit.me) is implementented in PHP and makes use of search engine
-optimization techniques. Custom PHP scripts generate page content, comment, and optimize
+The web application (online at http://techruit.me) is implementented in PHP and makes use of search engine
+optimization techniques. Custom PHP scripts generate page content, HTML comments, and optimize
 formatting for each view on the website. The website is also integrated with
-social media using Facebook's Open Graph tags. This allow the page to be liked and shared on
+social media using Facebook's Open Graph tags. This allows the page to be liked and shared on
 Facebook and provides information to other users when the page receives
 attention. Several screenshots of the web application can be seen in Appendix
 A.
@@ -516,20 +519,10 @@ CodeScore has been evaluated on four main criteria:
 \end{itemize}
 
 For the first criterion, we designed user surveys in which users identified
-the same code smells that are detected by CodeScore. For testing small projects,
-we asked three volunteers to write short Java programs (100-300 lines of code) 
-that included some examples of what they considered ``bad code." For medium-sized
-projects (500-1000 lines of code), we used assignments submitted by
-randomly selected students in CIS 120 at the University of Pennsylvania. Finally, to test larger
-projects, we used open-source Java projects publicly hosted on Github (>2000
-lines of code). Each participant evaluated one
-code sample of each size in three separate sessions for a total of nine code
-samples per person. Participants were given a list of the code smells, their
-definitions, and examples, and asked to identify all instances of them in the
-provided code samples. We considered a code smell
-``detected" by the participants if at least one third of them (9 people) marked the same
-line. Figure~\ref{fig: acc} displays the percentages of code smells correctly
-identified by the CodeScore detectors as compared to human identification in the
+the same code smells that are detected by CodeScore. We used code samples from
+existing projects and some code samples that were written to intentionally
+contain ``bad code." We had humans detect code smells in the samples and then
+compared their results to those of CodeScore. Figure~\ref{fig: acc} displays the percentages of code smells correctly identified by the CodeScore detectors as compared to human identification in the
 user studies. 
 
 CodeScore detected $100\%$ of violations using the comment to code ratio, line
@@ -556,7 +549,8 @@ Syntax Tree API. However, the benefits of using the AST API in terms of simplici
 modularity outweigh the slight slowness in processing. See Figure~\ref{fig:runtime} for a graph of the runtime analysis results.
 
 The success of the web application can be quantified using search results and various analytics
-provided by Google. At the time of publishing of this report, the website (techruit.me) ranks in 
+provided by Google. At the time of publishing of this report, the website
+(http://techruit.me) ranks in 
 the top two results when searching Google for ``techruit". The website is in the
 top 8 results on
 Google and top 4 on Bing when the search term is ``codescore recruiting." The
@@ -646,9 +640,20 @@ helps connect recruiters with talented programmers.
 % hard enough, there is probably a command to do exactly this (and
 % wouldn't need tweaked after edits).
 \vspace{175pt}
+\onecolumn
 \appendix
 \section{Web Application Screenshots}
-\begin{figure}
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=500px]{new_project.png}
+	\end{center}
+	\vspace{-12pt}
+	\caption{Project Submission Page}
+	\label{fig:report1}
+\end{figure}
+
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=500px]{report_overview1}
 	\end{center}
@@ -657,7 +662,25 @@ helps connect recruiters with talented programmers.
 	\label{fig:report1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=500px]{report_overview2}
+	\end{center}
+	\vspace{-12pt}
+	\caption{Middle of Report page}
+	\label{fig:report2}
+\end{figure}
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=500px]{report_overview3}
+	\end{center}
+	\vspace{-12pt}
+	\caption{Bottom of Report page}
+	\label{fig:report2}
+\end{figure}
+
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=500px]{sample_candidate}
 	\end{center}
