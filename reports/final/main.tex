@@ -366,7 +366,8 @@ greatest technical challenges. Each code smell requires a unique detection
 algorithm, sometimes involving analysis of multiple classes together or complex
 parsing. The detectors search for all possible patterns indicative of a
 particular code smell using the syntactical structure of the program. They track the number and location of all 
-violations. For any detectors that require some sort of threshold, 
+violations, compiling them into comprehensive reports in javascript object notation (JSON) for interpretation by
+other modules in the system. In detectors which equire thresholds, 
 such as the maximum depth allowed for nested conditionals, the program's default
 parameters can be overriden by inputting custom parameters.
 
@@ -397,8 +398,8 @@ questions, and a project showcase.
 All processing for CodeScore happens on an Amazon EC2 cloud processing machine.
 EC2 is a service that provides resizable computing capacity in the cloud. 
 Users upload Java code in the form of a single .java file or a zip file
-containing one or more .java files to the EC2 instance through a simple web app
-created using PHP. The preferences 
+containing one or more .java files to the EC2 instance through our website, which
+we developed in PHP. The preferences 
 file is encoded in JSON and includes information that is specific to each detector, 
 such as thresholds for certain code smells. It also includes optional weights if
 the user would like to change how much a given detector influences the overall
@@ -449,8 +450,9 @@ process is a single score that gives a user an at-a-glance measure of the intern
 \end{figure*}
 
 The program controller, scoring module, and all detectors are implemented in
-Java. Multithreading and concurrency of the detectors is accomplished using the Java thread pool
-library. The detection algorithms use the Eclipse Java Abstract Syntax Tree (AST) API to parse the
+Java. Multithreading and concurrency of the detectors is accomplished Java's threading libraries
+and a custom worker thread pool. The detection algorithms use the Eclipse Java Abstract 
+Syntax Tree (AST) API to parse the
 Java code as a first step in finding code smells. Traversing the AST allows the
 system to access and manipulate Java code at the syntactic level, efficiently searching
 for specific elements such as if statements or method invocations. The AST API also
